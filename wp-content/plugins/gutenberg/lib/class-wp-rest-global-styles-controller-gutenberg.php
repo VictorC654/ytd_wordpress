@@ -254,7 +254,7 @@ class WP_REST_Global_Styles_Controller_Gutenberg extends WP_REST_Posts_Controlle
 	 * Prepares a single global styles config for update.
 	 *
 	 * @since 5.9.0
-	 * @since 6.2.0 Added validation of styles.css property.
+	 * @since 6.2.0 Added validation of style.css property.
 	 * @since 6.6.0 Added registration of block style variations from theme.json sources (theme.json, user theme.json, partials).
 	 *
 	 * @param WP_REST_Request $request Request object.

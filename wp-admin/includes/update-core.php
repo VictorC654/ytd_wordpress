@@ -728,7 +728,7 @@ $_old_files = array(
 	'wp-includes/block-patterns/text-two-columns.php',
 	'wp-includes/block-patterns/large-header-button.php',
 	'wp-includes/blocks/subhead',
-	'wp-includes/css/dist/editor/editor-styles.css',
+	'wp-includes/css/dist/editor/editor-style.css',
 	'wp-includes/css/dist/editor/editor-styles.min.css',
 	'wp-includes/css/dist/editor/editor-styles-rtl.css',
 	'wp-includes/css/dist/editor/editor-styles-rtl.min.css',

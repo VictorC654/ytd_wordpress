@@ -13,13 +13,15 @@ if (!defined('ABSPATH')) {
 
 class CHP
 {
+    public $poem = "No one can tell me,\nNobody knows,\nWhere the wind comes from,\nWhere the wind goes.";
+
     /**
      * Hooking up to wp
      */
     public function initialize()
     {
-        add_action('wp_head', array($this, 'add_hello_message_to_header'));
-        add_action('wp_head', array($this, 'enqueue_styles'));
+        add_action('wp_head', array($this, 'display_random_poem_line'));
+        add_action('wp_enqueue_scripts', array($this, 'enqueue_styles'));
     }
 
     /**
@@ -31,11 +33,13 @@ class CHP
     }
 
     /**
-     * Displaying the message
+     * Separating the poem lines, then displaying them
      */
-    public function add_hello_message_to_header()
+    public function display_random_poem_line()
     {
-        echo "<p class='custom-header-message'>Hello from the custom plugin.</p>";
+        $poemLines = explode("\n", $this->poem);
+
+        echo "<p class='custom-header-message'>" . $poemLines[wp_rand(0, count($poemLines) - 1)] . "</p>";
     }
 }
 

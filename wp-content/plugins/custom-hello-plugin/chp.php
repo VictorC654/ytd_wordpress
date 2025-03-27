@@ -13,7 +13,7 @@ if (!defined('ABSPATH')) {
 
 class CHP
 {
-    public $poem = "No one can tell me,\nNobody knows,\nWhere the wind comes from,\nWhere the wind goes.";
+    public $poem = "";
 
     /**
      * Hooking up to wp
@@ -39,7 +39,15 @@ class CHP
     {
         $poemLines = explode("\n", $this->poem);
 
-        echo "<p class='custom-header-message'>" . $poemLines[wp_rand(0, count($poemLines) - 1)] . "</p>";
+        if(count($poemLines) > 0)
+        {
+            echo "<p class='custom-header-message'>" . $poemLines[wp_rand(0, count($poemLines) - 1)] . "</p>";
+        }
+        else
+        {
+            echo "";
+        }
+
     }
 }
 

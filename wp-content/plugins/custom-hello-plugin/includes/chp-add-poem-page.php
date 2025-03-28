@@ -1,33 +1,27 @@
 <?php
 
-// adding a new poem
+/**
+ * Registering the poem in the options table
+ */
 if(isset($_POST['add_poem']))
 {
-    $content = sanitize_textarea_field($_POST['poem_content']);
+    $poem_content = sanitize_textarea_field($_POST['poem_content']);
+    $update_response = update_option('chp_poem', $poem_content);
 
-    $poems = get_option('chp_poems');
-
-    if ( !$poems ) {
-        $poems = [];
-    }
-    $poems[] = $content;
-
-    $response = update_option( 'chp_poems', $poems );
-
-    if($response)
+    if(!empty($update_response))
     {
-        add_post_meta($response, 'poem_content', $content);
         echo '<div class="notice notice-success"><p>Poem added successfully.</p></div>';
         exit;
-    }
-    else
+    } else
     {
         echo '<div class="notice notice-error"><p>Poem could not be added.</p></div>';
     }
 }
 
-// fetching all poems
-$poems = get_option('chp_poems');
+/**
+ * Retrieveing the poem to display it on this page
+ */
+$poem = get_option('chp_poem');
 
 ?>
 
@@ -49,7 +43,7 @@ $poems = get_option('chp_poems');
         </p>
     </form>
     <h1>Added Poems</h1>
-    <?php if ($poems) : ?>
+    <?php if ($poem) : ?>
         <table class="wp-list-table widefat fixed striped">
             <thead>
             <tr>
@@ -57,11 +51,11 @@ $poems = get_option('chp_poems');
             </tr>
             </thead>
             <tbody>
-            <?php foreach ($poems as $poem) : ?>
                 <tr>
-                    <td><?php echo nl2br($poem) ?></td>
+                    <td>
+                        <?php echo nl2br($poem) ?>
+                    </td>
                 </tr>
-            <?php endforeach; ?>
             </tbody>
         </table>
     <?php else : ?>

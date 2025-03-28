@@ -15,8 +15,6 @@ if (!defined('ABSPATH')) {
 
 class CHP
 {
-    public $poem;
-
     /**
      * Hooking up to wp
      */
@@ -34,27 +32,15 @@ class CHP
     }
 
     /**
-     * fetching one poem from the database
-     */
-    public function fetch_poem()
-    {
-        $poems = get_option('chp_poems');
-        if ($poems)
-        {
-            $this->poem = $poems[0];
-        }
-    }
-
-    /**
      * Separating the poem lines, then displaying them
      */
-    public function generate_random_poem_line()
+    public function get_random_poem_line()
     {
-        $this->fetch_poem();
+        $poem = get_option('chp_poem');
         $output = "";
-        if(!empty($this->poem))
+        if(!empty($poem))
         {
-            $poemLines = explode("\n", $this->poem);
+            $poemLines = explode("\n", $poem);
             $output = $poemLines[wp_rand(0, count($poemLines) - 1)];
         }
 
@@ -70,5 +56,5 @@ $chp->initialize();
 
 function display_random_line() {
     global $chp;
-    return $chp->generate_random_poem_line();
+    return $chp->get_random_poem_line();
 }

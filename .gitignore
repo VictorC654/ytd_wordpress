@@ -16,7 +16,6 @@
 #/readme.html
 #/wp-*.php
 #/xmlrpc.php
-
 # Configuration
 wp-config.php
 
@@ -25,7 +24,9 @@ wp-config.php
 
 # Uploads
 /wp-content/uploads/
+
 # Log files
+local-xdebuginfo.php
 *.log
 
 # htaccess

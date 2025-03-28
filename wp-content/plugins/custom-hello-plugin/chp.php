@@ -38,20 +38,10 @@ class CHP
      */
     public function fetch_poem()
     {
-        $queryArgs = array(
-            'post_type' => 'poem',
-            'post_status' => 'publish',
-            'posts_per_page' => 1,
-        );
-        $query = new WP_Query($queryArgs);
-        wp_reset_postdata();
-        if($query->have_posts()) {
-
-            $query->the_post();
-
-            get_post();
-
-            $this->poem = nl2br(get_the_content());
+        $poems = get_option('chp_poems');
+        if ($poems)
+        {
+            $this->poem = $poems[0];
         }
     }
 
@@ -61,15 +51,14 @@ class CHP
     public function generate_random_poem_line()
     {
         $this->fetch_poem();
+        $output = "";
         if(!empty($this->poem))
         {
             $poemLines = explode("\n", $this->poem);
-            return $poemLines[wp_rand(0, count($poemLines) - 1)];
+            $output = $poemLines[wp_rand(0, count($poemLines) - 1)];
         }
-        else
-        {
-            echo "";
-        }
+
+        return $output;
     }
 }
 

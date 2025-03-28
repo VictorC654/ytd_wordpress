@@ -5,17 +5,18 @@ if(isset($_POST['add_poem']))
 {
     $content = sanitize_textarea_field($_POST['poem_content']);
 
-    $poem_post = array(
-        'post_content'  => $content,
-        'post_status'   => 'publish',
-        'post_type'     => 'poem',
-    );
+    $poems = get_option('chp_poems');
 
-    $post_id = wp_insert_post($poem_post);
+    if ( !$poems ) {
+        $poems = [];
+    }
+    $poems[] = $content;
 
-    if($post_id)
+    $response = update_option( 'chp_poems', $poems );
+
+    if($response)
     {
-        add_post_meta($post_id, 'poem_content', $content);
+        add_post_meta($response, 'poem_content', $content);
         echo '<div class="notice notice-success"><p>Poem added successfully.</p></div>';
         exit;
     }
@@ -26,15 +27,8 @@ if(isset($_POST['add_poem']))
 }
 
 // fetching all poems
+$poems = get_option('chp_poems');
 
-$queryArgs = array(
-    'post_type' => 'poem',
-    'post_status' => 'publish',
-    'posts_per_page' => -1, // Display all poems
-);
-$poem_query = new WP_Query($queryArgs);
-
-wp_reset_postdata();
 ?>
 
 <div class="wrap">
@@ -55,7 +49,7 @@ wp_reset_postdata();
         </p>
     </form>
     <h1>Added Poems</h1>
-    <?php if ($poem_query->have_posts()) : ?>
+    <?php if ($poems) : ?>
         <table class="wp-list-table widefat fixed striped">
             <thead>
             <tr>
@@ -63,11 +57,11 @@ wp_reset_postdata();
             </tr>
             </thead>
             <tbody>
-            <?php while ($poem_query->have_posts()) : $poem_query->the_post(); ?>
+            <?php foreach ($poems as $poem) : ?>
                 <tr>
-                    <td><?php the_content(); ?></td>
+                    <td><?php echo nl2br($poem) ?></td>
                 </tr>
-            <?php endwhile; ?>
+            <?php endforeach; ?>
             </tbody>
         </table>
     <?php else : ?>

@@ -6,6 +6,8 @@ Author: Victor
 Version: 1.0
 */
 
+require_once plugin_dir_path(__FILE__) . 'includes/chp-functions.php';
+
 // for security, no direct access to plugin
 if (!defined('ABSPATH')) {
     exit;
@@ -13,14 +15,13 @@ if (!defined('ABSPATH')) {
 
 class CHP
 {
-    public $poem = "";
+    public $poem;
 
     /**
      * Hooking up to wp
      */
     public function initialize()
     {
-        add_action('wp_head', array($this, 'display_random_poem_line'));
         add_action('wp_enqueue_scripts', array($this, 'enqueue_styles'));
     }
 
@@ -33,21 +34,42 @@ class CHP
     }
 
     /**
+     * fetching one poem from the database
+     */
+    public function fetch_poem()
+    {
+        $queryArgs = array(
+            'post_type' => 'poem',
+            'post_status' => 'publish',
+            'posts_per_page' => 1,
+        );
+        $query = new WP_Query($queryArgs);
+        wp_reset_postdata();
+        if($query->have_posts()) {
+
+            $query->the_post();
+
+            get_post();
+
+            $this->poem = nl2br(get_the_content());
+        }
+    }
+
+    /**
      * Separating the poem lines, then displaying them
      */
-    public function display_random_poem_line()
+    public function generate_random_poem_line()
     {
-        $poemLines = explode("\n", $this->poem);
-
-        if(count($poemLines) > 0)
+        $this->fetch_poem();
+        if(!empty($this->poem))
         {
-            echo "<p class='custom-header-message'>" . $poemLines[wp_rand(0, count($poemLines) - 1)] . "</p>";
+            $poemLines = explode("\n", $this->poem);
+            return $poemLines[wp_rand(0, count($poemLines) - 1)];
         }
         else
         {
             echo "";
         }
-
     }
 }
 
@@ -56,3 +78,8 @@ class CHP
  */
 $chp = new CHP();
 $chp->initialize();
+
+function display_random_line() {
+    global $chp;
+    return $chp->generate_random_poem_line();
+}

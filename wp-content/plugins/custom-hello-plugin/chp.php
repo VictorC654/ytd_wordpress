@@ -16,17 +16,9 @@ if (!defined('ABSPATH')) {
 class CHP
 {
     /**
-     * Hooking up to wp
-     */
-    public function initialize()
-    {
-        add_action('wp_enqueue_scripts', array($this, 'enqueue_styles'));
-    }
-
-    /**
      * Enqueing the styles
      */
-    public function enqueue_styles()
+    public static function enqueue_styles()
     {
         wp_enqueue_style('chp-style', plugin_dir_url(__FILE__) . 'assets/css/chp-style.css');
     }
@@ -44,6 +36,18 @@ class CHP
             $output = $poemLines[wp_rand(0, count($poemLines) - 1)];
         }
 
-        return $output;
+        return apply_filters('cph-get-random-poem-line', $output);
     }
 }
+
+/**
+ * Style hook
+ */
+add_action('wp_enqueue_scripts', ['CHP', 'enqueue_styles']); // styles hook
+
+/**
+ * Adding a filter hook that modifies the line displayed on the header
+ */
+add_filter('cph-get-random-poem-line', function($output) {
+    return "Today's poem: " . strtoupper($output);
+});

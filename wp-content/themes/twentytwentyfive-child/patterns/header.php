@@ -17,9 +17,7 @@
     <!-- wp:group {"layout":{"type":"constrained"}} -->
     <div class="wp-block-group">
         <?php
-            if(function_exists('display_random_line') && $line = display_random_line()) {
-                echo "<div>" . $line . "</div>";
-            }
+           echo CHP::get_random_poem_line();
         ?>
         <!-- wp:group {"align":"wide","style":{"spacing":{"padding":{"top":"var:preset|spacing|30","bottom":"var:preset|spacing|30"}}},"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"space-between"}} -->
         <div class="wp-block-group alignwide" style="padding-top:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--30)">

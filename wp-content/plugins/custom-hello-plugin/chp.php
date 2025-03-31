@@ -34,7 +34,7 @@ class CHP
     /**
      * Separating the poem lines, then displaying them
      */
-    public function get_random_poem_line()
+    public static function get_random_poem_line()
     {
         $poem = get_option('chp_poem');
         $output = "";
@@ -46,15 +46,4 @@ class CHP
 
         return $output;
     }
-}
-
-/**
- * Setting up the plugin
- */
-$chp = new CHP();
-$chp->initialize();
-
-function display_random_line() {
-    global $chp;
-    return $chp->get_random_poem_line();
 }

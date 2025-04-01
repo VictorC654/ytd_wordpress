@@ -1133,3 +1133,10 @@ textarea {
 	text-decoration: none;
 	color:black;
 }
+.tc-add-book
+{
+	background-color:#E5E8E8;
+	margin-bottom:20px;
+	padding:20px;
+	border-radius:15px;
+}

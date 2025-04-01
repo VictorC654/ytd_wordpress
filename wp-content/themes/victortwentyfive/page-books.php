@@ -3,6 +3,9 @@
 /*
 Template Name: Books template
 */
+if (function_exists('acf_form')) {
+    acf_form_head();
+}
 get_header();
 ?>
 
@@ -31,4 +34,20 @@ get_header();
             <h1> No posts found </h1>
         <?php endif; ?>
     </div>
+    <div class="tc-add-book">
+        <h1>
+            Add a new book
+        </h1>
+        <?php acf_form(array(
+            'post_id' => 'new_post',
+            'new_post' => array('post_type' => 'book', 'post_status' => 'publish'),
+            'post_title' => true,
+            'submit_value'  => 'Add book',
+        )) ?>
+    </div>
 </main><!-- #main -->
+
+<?php
+get_sidebar();
+get_footer();
+

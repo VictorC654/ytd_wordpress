@@ -16,6 +16,7 @@
 #/readme.html
 #/wp-*.php
 #/xmlrpc.php
+
 # Configuration
 wp-config.php
 
@@ -28,6 +29,10 @@ wp-config.php
 # Log files
 local-xdebuginfo.php
 *.log
+
+# OS generated files
+.DS_Store
+/wp-content/.DS_Store
 
 # htaccess
 /.htaccess

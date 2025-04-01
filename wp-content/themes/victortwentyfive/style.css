@@ -47,7 +47,9 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 # Utilities
 	- Accessibility
 	- Alignments
-
+## Templates
+# Template Custom
+	- tc-main
 --------------------------------------------------------------*/
 
 /*--------------------------------------------------------------
@@ -1074,4 +1076,49 @@ textarea {
 	margin-left: auto;
 	margin-right: auto;
 	margin-bottom: 1.5em;
+}
+
+/*--------------------------------------------------------------
+# Template Custom
+--------------------------------------------------------------*/
+.tc-main
+{
+	width: 80%;
+	margin:0 auto;
+	background-color:#17202A;
+	padding:30px;
+	border-radius:20px;
+}
+.tc-main p,
+.tc-main h1,
+.tc-main h2,
+.tc-main h3,
+.tc-main h4,
+.tc-main h5,
+.tc-main h6 {
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+}
+
+.tc-main .entry-header
+{
+	color:#F7F9F9;
+}
+
+.tc-main .entry-content
+{
+	color:#F7F9F9;
+}
+
+.ct-signature {
+	color:#808B96;
+}
+
+.tc-main .entry-content blockquote
+{
+	margin:0;
+}
+.tc-main .entry-content pre
+{
+	color:black;
 }

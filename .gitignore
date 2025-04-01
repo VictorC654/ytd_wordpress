@@ -22,10 +22,10 @@ wp-config.php
 
 # Example themes
 #/wp-content/themes/twenty*/
+/wp-content/themes/victortwentyfive/vendor
 
 # Uploads
 /wp-content/uploads/
-
 # Log files
 local-xdebuginfo.php
 *.log

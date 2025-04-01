@@ -1122,3 +1122,14 @@ textarea {
 {
 	color:black;
 }
+.tc-article
+{
+	background-color:#E5E8E8;
+	margin-bottom:20px;
+	padding:20px;
+	border-radius:15px;
+}
+.tc-article a {
+	text-decoration: none;
+	color:black;
+}

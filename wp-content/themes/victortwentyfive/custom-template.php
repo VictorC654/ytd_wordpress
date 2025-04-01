@@ -7,23 +7,25 @@ get_header();
 
     <main id="primary" class="tc-main">
         <div class="ct-signature">
-            CUSTOM TEMPLATE
+            CUSTOM TEMPLATE that displays 5 posts
         </div>
         <div>
-        <?php
-            while ( have_posts() ) :
-                the_post();
-
-                get_template_part( 'template-parts/content', get_post_type() );
-
-//                the_post_navigation(
-//                    array(
-//                        'prev_text' => '<span class="nav-subtitle">' . esc_html__( 'Previous:', 'victortwentyfive' ) . '</span> <span class="nav-title">%title</span>',
-//                        'next_text' => '<span class="nav-subtitle">' . esc_html__( 'Next:', 'victortwentyfive' ) . '</span> <span class="nav-title">%title</span>',
-//                    )
-//                );
-            endwhile; // End of the loop.
-            ?>
+            <?php
+            $query = new WP_Query(array('posts_per_page' => '5'));
+            if($query->have_posts()):
+                while($query->have_posts()): $query->the_post();
+                    ?>
+                    <article class="tc-article">
+                        <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+                        <?php the_content(); ?>
+                    </article>
+                <?php
+                endwhile;
+                wp_reset_postdata();
+            else :
+                ?>
+                <h1> No posts found </h1>
+            <?php endif; ?>
         </div>
     </main><!-- #main -->
 

@@ -34,20 +34,25 @@ get_header();
             <h1> No posts found </h1>
         <?php endif; ?>
     </div>
-    <div class="tc-add-book">
-        <h1>
-            Add a new book
-        </h1>
-        <?php acf_form(array(
-            'post_id' => 'new_post',
-            'new_post' => array('post_type' => 'book', 'post_status' => 'publish'),
-            'post_title' => true,
-            'submit_value'  => 'Add book',
-        )) ?>
-    </div>
 </main><!-- #main -->
 
 <?php
+function save_book() {
+    $book_post = array('post_title' => 'Example Book', 'post_type' => 'book', 'post_status' => 'publish');
+    $book_id = wp_insert_post($book_post);
+
+    if($book_id)
+    {
+        update_field('book_title', 'Example Title', $book_id);
+        update_field('book_author', 'Example Author', $book_id);
+        update_field('book_genre', 'Example Genre', $book_id);
+        update_field('book_publication_date', get_the_date(), $book_id);
+        update_field('book_price', 19.22, $book_id);
+        update_field('book_rating', 4.5, $book_id);
+    }
+}
+
+save_book();
 get_sidebar();
 get_footer();
 

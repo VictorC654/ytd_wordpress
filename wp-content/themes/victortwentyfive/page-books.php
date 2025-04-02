@@ -52,7 +52,7 @@ function save_book() {
     }
 }
 
-save_book();
+//save_book();
 get_sidebar();
 get_footer();
 

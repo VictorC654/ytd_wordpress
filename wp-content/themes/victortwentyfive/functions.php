@@ -178,17 +178,50 @@ if ( defined( 'JETPACK__VERSION' ) ) {
 /**
  * Custom AJAX Request to get 5 books
  */
-function get_books() {
+function get_books($request = null) {
+    /**
+     * Getting the books limit based on the request type
+     */
+    $limit = $request instanceof WP_REST_Request ? $request->get_param('limit') : (isset($_POST['limit']) ? intval($_POST['limit']) : 5);
 
-    // Send a request and get the response
-    $response = rest_do_request(new WP_REST_Request('GET', '/cra/v1/books'));
+    $query = new WP_Query([
+        'post_type' => 'book',
+        'posts_per_page' => $limit
+    ]);
 
-    // Check for errors and return the response
-    if (is_wp_error($response)) {
-        wp_send_json_error('Failed to get books', 500);
+    $books = [];
+
+    /**
+     * Getting the books
+     */
+    if ($query->have_posts()) {
+        while ($query->have_posts()) {
+            $query->the_post();
+            $books[] = get_fields(get_the_ID());
+        }
+
+        wp_reset_postdata();
+
+        /**
+         * If the functions is called from the API, return a WP_REST_Response type, else return AJAX response
+         */
+        if ($request instanceof WP_REST_Request) {
+            return new WP_REST_Response($books, 200);
+        } else {
+            wp_send_json_success($books);
+        }
+    } else {
+        $error = ['message' => 'Books not found'];
+
+        /**
+         * If the functions is called from the API, return an erorr of WP_REST_Response type, else return AJAX response
+         */
+        if ($request instanceof WP_REST_Request) {
+            return new WP_REST_Response($error, 404);
+        } else {
+            wp_send_json_error($error);
+        }
     }
-
-    wp_send_json_success($response->get_data());
 }
 
 add_action('wp_ajax_get_books', 'get_books');

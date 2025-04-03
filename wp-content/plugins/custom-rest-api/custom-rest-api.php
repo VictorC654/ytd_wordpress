@@ -49,33 +49,8 @@ function cra_register_routes()
 
 function cra_get_books(WP_REST_Request $request): WP_REST_Response
 {
-    $query = new WP_Query(
-        [
-            'post_type' => 'book',
-            'posts_per_page' => $request->get_param('limit')
-        ]
-    );
-
-    /**
-     * Looping through the books and saving them in an array
-     */
-    if($query->have_posts()) {
-        $books = [];
-
-        while ($query->have_posts()) {
-            $query->the_post();
-            $books[] = get_fields(get_the_ID());
-        }
-
-        wp_reset_postdata();
-
-        /**
-         * Returning a REST response object
-         */
-        return new WP_REST_Response($books);
-    }
-
-    return new WP_REST_Response(['message' => 'Books not found'], 404);
+    $response = get_books($request);
+    return $response;
 }
 
 function cra_create_book(WP_REST_Request $request): WP_REST_Response

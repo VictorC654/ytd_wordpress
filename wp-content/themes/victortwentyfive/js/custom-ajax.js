@@ -3,18 +3,20 @@ const ajaxButton = document.getElementById("ajax-button");
 ajaxButton.addEventListener("click", async function () {
     try {
         const bookTableBody = document.querySelector('#bookTable tbody');
-
         bookTableBody.innerHTML = '';
-
+        let limit = 5;
         const response = await fetch(ajax_obj.ajax_url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
-            body: 'action=get_books'
+            body: new URLSearchParams({
+                action: 'get_books',
+                limit: 5
+            })
         });
 
-        const { success, data: books } = await response.json();
+        let { success, data: books } = await response.json();
 
         if(success)
         {

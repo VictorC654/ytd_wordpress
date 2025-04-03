@@ -175,3 +175,21 @@ if ( defined( 'JETPACK__VERSION' ) ) {
 	require get_template_directory() . '/inc/jetpack.php';
 }
 
+/**
+ * Custom AJAX Request to get 5 books
+ */
+function get_books() {
+
+    // Send a request and get the response
+    $response = rest_do_request(new WP_REST_Request('GET', '/cra/v1/books'));
+
+    // Check for errors and return the response
+    if (is_wp_error($response)) {
+        wp_send_json_error('Failed to get books', 500);
+    }
+
+    wp_send_json_success($response->get_data());
+}
+
+add_action('wp_ajax_get_books', 'get_books');
+add_action('wp_ajax_nopriv_get_books', 'get_books');

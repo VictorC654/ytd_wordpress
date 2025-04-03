@@ -52,7 +52,9 @@ function save_book() {
     }
 }
 
-//save_book();
+wp_register_script('custom-script', get_template_directory_uri() . '/js/custom-script.js', array(), '1.0.0', true);
+wp_enqueue_script('custom-script');
+
 get_sidebar();
 get_footer();
 

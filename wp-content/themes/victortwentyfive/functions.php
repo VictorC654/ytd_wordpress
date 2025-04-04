@@ -175,3 +175,40 @@ if ( defined( 'JETPACK__VERSION' ) ) {
 	require get_template_directory() . '/inc/jetpack.php';
 }
 
+/**
+ * Function to get books
+ */
+function get_books($limit = 5) {
+    $books = [];
+    $query = new WP_Query([
+        'post_type' => 'book',
+        'posts_per_page' => $limit
+    ]);
+
+    while ($query->have_posts()) {
+        $query->the_post();
+        $books[] = get_fields();
+    }
+
+    return $books;
+}
+
+/**
+ * Function for ajax to get books
+ */
+function ajax_get_books()
+{
+    $books = get_books();
+
+    if(!empty($books))
+    {
+        wp_send_json_success($books);
+    } else {
+        wp_send_json_error('No books found.', 404);
+    }
+
+    wp_die();
+}
+
+add_action('wp_ajax_get_books', 'ajax_get_books');
+add_action('wp_ajax_nopriv_get_books', 'ajax_get_books');

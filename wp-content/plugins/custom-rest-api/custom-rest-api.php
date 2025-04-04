@@ -27,7 +27,7 @@ function cra_register_routes()
                 'limit' => [
                     'required' => false,
                     'validate_callback' => fn($param) => is_numeric($param),
-                    'default' => 5,
+                    'default' => 1,
                 ],
             ]
         ]
@@ -49,29 +49,10 @@ function cra_register_routes()
 
 function cra_get_books(WP_REST_Request $request): WP_REST_Response
 {
-    $query = new WP_Query(
-        [
-            'post_type' => 'book',
-            'posts_per_page' => $request->get_param('limit')
-        ]
-    );
+    $books = get_books();
 
-    /**
-     * Looping through the books and saving them in an array
-     */
-    if($query->have_posts()) {
-        $books = [];
+    if(!empty($books)) {
 
-        while ($query->have_posts()) {
-            $query->the_post();
-            $books[] = get_fields(get_the_ID());
-        }
-
-        wp_reset_postdata();
-
-        /**
-         * Returning a REST response object
-         */
         return new WP_REST_Response($books);
     }
 

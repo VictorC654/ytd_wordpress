@@ -198,7 +198,14 @@ function get_books($limit = 5) {
  */
 function ajax_get_books()
 {
-    wp_send_json_success(get_books());
+    $books = get_books();
+
+    if(!empty($books))
+    {
+        wp_send_json_success($books);
+    } else {
+        wp_send_json_error('No books found.', 404);
+    }
 
     wp_die();
 }

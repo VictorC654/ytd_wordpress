@@ -27,7 +27,7 @@ function cra_register_routes()
                 'limit' => [
                     'required' => false,
                     'validate_callback' => fn($param) => is_numeric($param),
-                    'default' => 5,
+                    'default' => 1,
                 ],
             ]
         ]

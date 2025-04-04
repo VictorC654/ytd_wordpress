@@ -1,10 +1,13 @@
+// Saving the button that triggers the ajax request
 const ajaxButton = document.getElementById("ajax-button");
 
 ajaxButton.addEventListener("click", async function () {
     try {
+
+        // Getting the table body and resetting it everytime the "ajaxButton" button is pressed
         const bookTableBody = document.querySelector('#bookTable tbody');
         bookTableBody.innerHTML = '';
-        let limit = 5;
+
         const response = await fetch(ajax_obj.ajax_url, {
             method: 'POST',
             headers: {
@@ -12,15 +15,17 @@ ajaxButton.addEventListener("click", async function () {
             },
             body: new URLSearchParams({
                 action: 'get_books',
-                limit: 5
+                limit: 1 // the number that will be used for the post_per_page query argument, default is 5
             })
         });
 
-        let { success, data: books } = await response.json();
+        // JSON response is { "success"(bool), "data": [...](books array] },
+        const responseData = await response.json();
 
-        if(success)
+        if(responseData.success)
         {
-            bookTableBody.innerHTML = books
+            // creating a new table cell for each book field
+            bookTableBody.innerHTML = responseData.data
                 .map(book =>
                     `<tr>
                     <td>${book.book_title}</td>
@@ -31,6 +36,14 @@ ajaxButton.addEventListener("click", async function () {
                     <td>${book.book_rating}</td>
                 </tr>`
                 ).join('');
+        } else {
+            // displaying a message in case there are no books
+            bookTableBody.innerHTML = `
+                <tr>
+                    <td colspan="6" class="error-message">
+                        Failed to load books. Please try again later.
+                    </td>
+                </tr>`;
         }
     } catch (error) {
         console.error('Error getting books:', error);

@@ -49,8 +49,7 @@ function cra_register_routes()
 
 function cra_get_books(WP_REST_Request $request): WP_REST_Response
 {
-    $response = get_books($request);
-    return $response;
+    return new WP_REST_Response(get_books());
 }
 
 function cra_create_book(WP_REST_Request $request): WP_REST_Response

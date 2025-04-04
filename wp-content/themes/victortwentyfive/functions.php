@@ -176,86 +176,32 @@ if ( defined( 'JETPACK__VERSION' ) ) {
 }
 
 /**
- * Custom function to get books for AJAX and API based on a limit
+ * Function to get books
  */
-function get_books($request = null) {
-    try {
-        $query = new WP_Query([
-            'post_type' => 'book',
-            'posts_per_page' => get_post_limit($request)
-        ]);
+function get_books($limit = 5) {
+    $books = [];
+    $query = new WP_Query([
+        'post_type' => 'book',
+        'posts_per_page' => $limit
+    ]);
 
-        /**
-         * Checking if there are posts
-         */
-        if(!$query->have_posts())
-        {
-            return send_error_response('No books found.', 404, $request);
-        }
-
-        $books = get_post_fields($query);
-
-        return send_success_response($books, $request);
-    } catch (Exception $e) {
-        return send_error_response('An unexpected error occurred.', 500, $request);
-    }
-}
-
-add_action('wp_ajax_get_books', 'get_books');
-add_action('wp_ajax_nopriv_get_books', 'get_books');
-
-/**
- * Function for getting the object limit based on the request type
- */
-function get_post_limit($request)
-{
-    if($request instanceof WP_REST_Request) {
-        return $request->get_param('limit');
-    }
-
-    return isset($_POST['limit']) ? intval($_POST['limit']) : 5;
-}
-
-/**
- * Function for getting the object limit based on the request type
- */
-function get_post_fields($query)
-{
     while ($query->have_posts()) {
         $query->the_post();
-        $data[] = get_fields(get_the_ID());
+        $books[] = get_fields();
     }
 
-    return $data;
+    return $books;
 }
 
 /**
- * Function for sending a success message and the object
+ * Function for ajax to get books
  */
-function send_success_response($data, $request) {
+function ajax_get_books()
+{
+    wp_send_json_success(get_books());
 
-    if ($request instanceof WP_REST_Request) {
-        return new WP_REST_Response([
-            'success' => true,
-            'data'    => $data
-        ], 200);
-    }
-
-    wp_send_json_success($data);
+    wp_die();
 }
 
-/**
- * Function for sending an error message
- */
-function send_error_response($message, $status_code, $request) {
-    $response = [
-        'success' => false,
-        'message' => $message
-    ];
-
-    if ($request instanceof WP_REST_Request) {
-        return new WP_REST_Response($response, $status_code);
-    }
-
-    wp_send_json_error($response, $status_code);
-}
+add_action('wp_ajax_get_books', 'ajax_get_books');
+add_action('wp_ajax_nopriv_get_books', 'ajax_get_books');

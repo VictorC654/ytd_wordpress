@@ -33,6 +33,7 @@ get_header();
 <?php
 
 wp_register_script('custom-ajax-script', get_template_directory_uri() . '/js/custom-ajax.js', '1.0.0', true);
+wp_enqueue_script('jquery');
 wp_localize_script('custom-ajax-script', 'ajax_obj', ['ajax_url' => admin_url('admin-ajax.php')]);
 wp_enqueue_script('custom-ajax-script');
 
